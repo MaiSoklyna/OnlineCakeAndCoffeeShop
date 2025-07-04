@@ -1,38 +1,191 @@
-.App {
-  text-align: center;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+@layer components {
+  .headerWrapper {
+    @apply bg-primary text-center flex justify-center;
+  }
+
+  .headerWrapper .top-strip {
+    @apply p-0 w-full h-[30px] bg-gradient-to-r from-primary to-accent;
+  }
+
+  .headerWrapper .header {
+    @apply w-full h-auto py-2.5;
+  }
+
+  .headerWrapper .header .countryDrop {
+    @apply w-[150px] h-20 min-w-[150px] mx-auto flex;
+  }
+
+  .headerWrapper .top-strip p {
+    @apply text-white text-xs font-bold;
+  }
+
+  .container {
+    @apply max-w-none mx-auto p-5;
+  }
+
+  .logoWrapper img {
+    @apply w-20 h-20 rounded-[25%];
+  }
+
+  .bg-purple {
+    @apply text-black;
+  }
+
+  .headerWrapper .header .part2 .dropdown {
+    @apply w-[150px] h-20 min-w-[150px];
+  }
+
+  .headerWrapper .header .part2 .dropdown .dropdown {
+    @apply text-left justify-start;
+  }
+
+  .headerWrapper .header .part2 .dropdown .label {
+    @apply text-xs capitalize text-opacity-70 text-black;
+  }
+
+  .headerWrapper .header .part2 .dropdown .label {
+    @apply text-xs capitalize text-opacity-80 text-black font-bold;
+  }
+
+  .HeaderSearch {
+    @apply w-80 flex items-center justify-center ml-5 p-[10px_16px] bg-gradient-to-r from-primary to-accent rounded-[30px] shadow-sm text-opacity-85 text-black transition-shadow duration-200;
+  }
+
+  .HeaderSearch input[type="text"] {
+    @apply flex-1 border-none outline-none bg-transparent text-accent-dark text-base py-2 px-3;
+  }
+
+  .HeaderSearch .btn {
+    @apply ml-2.5 bg-accent text-white border-none rounded-full w-[38px] h-[38px] flex items-center justify-center transition-colors duration-200;
+  }
+
+  .HeaderSearch .btn:hover {
+    @apply bg-primary text-white;
+  }
+
+  .HeaderSearch input[type="text"]::placeholder {
+    @apply text-primary-dark opacity-100 text-sm;
+  }
+
+  .headerWrapper .part3 .circle {
+    @apply flex items-center justify-center min-w-[50px] min-h-[50px] w-[50px] h-[50px] rounded-full border-none outline-none bg-transparent shadow-none text-accent cursor-pointer p-0 appearance-none no-underline;
+  }
+
+  .headerWrapper .part3 .circle:focus,
+  .headerWrapper .part3 .circle:active,
+  .headerWrapper .part3 .circle:hover {
+    @apply outline-none shadow-none border-none bg-transparent;
+  }
+
+  .headerWrapper .part3 .circle * {
+    @apply border-none outline-none;
+  }
+
+  .headerWrapper .header .part2 .part3 {
+    @apply ml-5;
+  }
+
+  .cartTable button svg {
+    @apply text-primary;
+  }
+
+  .cartTable button {
+    @apply border-none rounded-[35px];
+  }
+
+  .cartTable {
+    @apply relative inline-block;
+  }
+
+  .cartTable .count {
+    @apply absolute top-[6px] right-[8px] bg-secondary text-white rounded-full min-w-[22px] h-[22px] text-base font-bold border-2 border-white shadow-sm z-[2] px-1.5;
+  }
+
+  .circle .btn1:hover {
+    @apply bg-primary text-secondary;
+  }
+
+  .cart-btn:hover {
+    @apply bg-primary-light transition-colors duration-150 text-accent-dark;
+  }
+
+  .allcartTab {
+    @apply bg-primary border-none p-[10px_20px] flex items-center justify-center w-full h-[50px];
+  }
+
+  /* Categories dropdown */
+  .all-categories-dropdown {
+    @apply relative inline-block text-left;
+  }
+
+  .categories-menu {
+    @apply absolute left-0 top-full mt-1 w-64 bg-white rounded-md shadow-lg z-10 hidden transition-all duration-200 ease-in-out border border-gray-100;
+  }
+
+  .all-categories-dropdown:hover .categories-menu {
+    @apply block;
+  }
+
+  .category-item {
+    @apply flex items-center py-2 px-4 hover:bg-primary-light transition-colors duration-150 cursor-pointer;
+  }
+
+  .category-item:hover {
+    @apply text-primary;
+  }
+
+  .cat-icon {
+    @apply w-5 h-5 mr-3 text-gray-500 transition-colors duration-150;
+  }
+
+  .category-item:hover .cat-icon {
+    @apply text-primary;
+  }
+
+  .cat-arrow {
+    @apply ml-auto text-gray-400;
+  }
+
+  /* Main navigation */
+  .main-nav {
+    @apply flex items-center space-x-6;
+  }
+
+  .nav-item {
+    @apply relative py-2;
+  }
+
+  .nav-item a {
+    @apply flex items-center text-gray-700 hover:text-primary transition-colors duration-150;
+  }
+
+  .nav-item .nav-icon {
+    @apply mr-2 text-gray-500;
+  }
+
+  .nav-item .nav-arrow {
+    @apply ml-1 text-gray-400;
+  }
+
+  .nav-item.active a,
+  .nav-item:hover a {
+    @apply text-primary;
+  }
+
+  .nav-item.active .nav-icon,
+  .nav-item:hover .nav-icon {
+    @apply text-primary;
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Typography utilities */
+.lato-thin {
+  font-family: "Lato", sans-serif;
+  font-weight: 300;
 }

@@ -1,0 +1,57 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "cursor.mcp.projectId": "ecommerce_full_stack",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    },
+    "files.exclude": {
+      "**/.git": true,
+      "**/.DS_Store": true,
+      "**/node_modules": true
+    },
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/build": true
+    }
+  },
+  "launch": {
+    "configurations": [
+      {
+        "type": "chrome",
+        "request": "launch",
+        "name": "Launch Chrome against localhost",
+        "url": "http://localhost:3000",
+        "webRoot": "${workspaceFolder}"
+      }
+    ]
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "start",
+        "type": "shell",
+        "command": "npm start",
+        "problemMatcher": []
+      },
+      {
+        "label": "build",
+        "type": "shell",
+        "command": "npm run build",
+        "problemMatcher": []
+      },
+      {
+        "label": "firebase:emulators",
+        "type": "shell",
+        "command": "firebase emulators:start",
+        "problemMatcher": []
+      }
+    ]
+  }
+} 

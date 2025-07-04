@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "ecommerce_full_stack": {
+      "rootPath": "D:/ecommerce_full_stack",
+      "type": "local"
+    }
+  }
+} 

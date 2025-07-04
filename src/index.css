@@ -1,13 +1,213 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom colors */
+:root {
+  --primary: #a690c9;
+  --primary-light: #f3eaff;
+  --primary-dark: #8a72ac;
+  --accent: #6c63ff;
+  --accent-dark: #3d246c;
+  --secondary: #ea2b0f;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+@layer base {
+  body {
+    font-family: "Lato", sans-serif;
+    @apply bg-gray-50 text-gray-800;
+  }
+}
+
+/* Custom component classes */
+@layer components {
+  /* Header components */
+  .header-top-strip {
+    @apply bg-primary text-white py-1;
+  }
+
+  .search-box-container {
+    @apply relative w-full max-w-md;
+  }
+
+  .search-box-input {
+    @apply w-full py-2 px-4 pr-10 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all;
+  }
+
+  .search-box-button {
+    @apply absolute right-0 top-0 bottom-0 bg-primary text-white px-4 rounded-r-full hover:bg-primary-dark transition-colors;
+  }
+
+  .categories-dropdown {
+    @apply relative;
+  }
+
+  .categories-menu {
+    @apply absolute top-full left-0 bg-white shadow-md rounded-md py-2 w-48 invisible opacity-0 transition-all duration-200 z-10;
+  }
+
+  .categories-dropdown:hover .categories-menu {
+    @apply visible opacity-100;
+  }
+
+  .category-item {
+    @apply block px-4 py-2 text-gray-700 hover:bg-primary-light hover:text-primary transition-colors duration-150;
+  }
+
+  /* Button components */
+  .btn-primary {
+    @apply bg-gradient-to-r from-primary to-primary-dark text-white font-medium py-2 px-5 rounded-md hover:from-primary-dark hover:to-primary transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98];
+  }
+
+  .btn-secondary {
+    @apply bg-white text-primary border border-primary font-medium py-2 px-5 rounded-md hover:bg-primary-light transition-colors duration-200;
+  }
+
+  .btn-outline {
+    @apply border-2 border-primary text-primary bg-transparent font-medium py-2 px-5 rounded-md hover:bg-primary-light transition-colors duration-200;
+  }
+
+  /* Card components */
+  .feature-card {
+    @apply flex flex-col items-center bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200;
+  }
+
+  .feature-icon {
+    @apply text-primary text-3xl mb-3;
+  }
+
+  .feature-title {
+    @apply text-lg font-semibold text-gray-800 mb-1;
+  }
+
+  .feature-text {
+    @apply text-sm text-gray-600 text-center;
+  }
+
+  .product-card {
+    @apply bg-white rounded-lg shadow-sm overflow-hidden transition-all duration-200 hover:shadow-md;
+  }
+
+  .product-image-container {
+    @apply relative overflow-hidden;
+  }
+
+  .product-image {
+    @apply w-full h-48 object-cover transition-transform duration-300 hover:scale-105;
+  }
+
+  .product-overlay {
+    @apply absolute inset-0 bg-black bg-opacity-40 flex flex-col items-center justify-center gap-2 opacity-0 transition-opacity duration-300 hover:opacity-100;
+  }
+
+  .product-info {
+    @apply p-4;
+  }
+
+  .product-category {
+    @apply text-xs text-primary font-medium uppercase mb-1;
+  }
+
+  .product-name {
+    @apply text-gray-800 font-semibold mb-1;
+  }
+
+  .product-price {
+    @apply text-gray-700 font-bold;
+  }
+
+  .quick-view-btn {
+    @apply bg-white text-gray-800 text-sm py-1 px-3 rounded hover:bg-gray-100 transition-colors duration-200;
+  }
+
+  .add-to-cart-btn {
+    @apply bg-primary text-white text-sm py-1 px-3 rounded hover:bg-primary-dark transition-colors duration-200;
+  }
+
+  /* Promo section */
+  .promo-section {
+    @apply py-16 bg-white;
+  }
+
+  .promo-card {
+    @apply flex items-center justify-between p-6 rounded-lg overflow-hidden relative;
+  }
+
+  .promo-content {
+    @apply z-10 flex-1;
+  }
+
+  .promo-title {
+    @apply text-2xl font-bold mb-2;
+  }
+
+  .promo-text {
+    @apply text-sm mb-4 max-w-xs;
+  }
+
+  .promo-btn {
+    @apply inline-block bg-white text-gray-800 font-medium py-1.5 px-4 rounded-md hover:bg-gray-100 transition-colors duration-200;
+  }
+
+  .promo-image {
+    @apply z-10 w-1/3 flex justify-end;
+  }
+
+  /* Hero section */
+  .hero-section {
+    @apply bg-gradient-to-r from-primary-dark to-primary py-8;
+  }
+
+  .hero-image-container {
+    @apply relative z-10;
+  }
+
+  .hero-image {
+    @apply w-full rounded-lg shadow-lg;
+  }
+
+  .promo-badge {
+    @apply text-center;
+  }
+
+  /* Newsletter */
+  .newsletter-section {
+    @apply bg-gradient-to-r from-primary to-primary-dark;
+  }
+
+  .newsletter-form-home {
+    @apply flex flex-col sm:flex-row gap-2 max-w-md mx-auto;
+  }
+
+  .newsletter-input-home {
+    @apply flex-1 py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50;
+  }
+
+  .newsletter-button-home {
+    @apply bg-white text-primary font-medium py-3 px-6 rounded-lg hover:bg-gray-100 transition-colors duration-200 sm:w-auto w-full;
+  }
+
+  /* Testimonials */
+  .testimonial-card {
+    @apply bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200;
+  }
+
+  .testimonial-content {
+    @apply space-y-3;
+  }
+
+  .testimonial-text {
+    @apply text-gray-600 italic mb-4;
+  }
+
+  .testimonial-author {
+    @apply text-gray-800 font-medium;
+  }
+}
+
+/* Custom utilities */
+@layer utilities {
+  .text-shadow {
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+  }
 }

@@ -1,0 +1,52 @@
+{
+  "project": "ecommerce_full_stack",
+  "version": "1.0.0",
+  "configurations": {
+    "development": {
+      "command": "npm start",
+      "cwd": "${workspaceRoot}",
+      "env": {
+        "NODE_ENV": "development"
+      }
+    },
+    "build": {
+      "command": "npm run build",
+      "cwd": "${workspaceRoot}",
+      "env": {
+        "NODE_ENV": "production"
+      }
+    },
+    "firebaseEmulators": {
+      "command": "firebase emulators:start",
+      "cwd": "${workspaceRoot}"
+    },
+    "firebaseDeploy": {
+      "command": "firebase deploy",
+      "cwd": "${workspaceRoot}"
+    }
+  },
+  "tasks": {
+    "installDependencies": {
+      "command": "npm install",
+      "cwd": "${workspaceRoot}"
+    },
+    "lintFix": {
+      "command": "npm run lint -- --fix",
+      "cwd": "${workspaceRoot}"
+    }
+  },
+  "watch": {
+    "src/**/*.js": {
+      "task": "development"
+    },
+    "src/**/*.jsx": {
+      "task": "development"
+    },
+    "src/**/*.css": {
+      "task": "development"
+    },
+    "firebase.json": {
+      "task": "firebaseEmulators"
+    }
+  }
+} 
