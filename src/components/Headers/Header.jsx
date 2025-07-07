@@ -3,19 +3,24 @@ import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../../../src/asset/logo.png';
 import { Button } from 'react-bootstrap';
 import SearchBox from './SearchBox';
-import { FaUser, FaAngleDown } from "react-icons/fa";
+import { FaUser, FaAngleDown, FaSearch } from "react-icons/fa";
 import { IoBagHandleSharp } from "react-icons/io5";
 import { FiMenu, FiX } from 'react-icons/fi';
 import { FaLock } from "react-icons/fa";
+import { MdLocationOn } from "react-icons/md";
+import LocationDropdown from './LocationDropdown';
 import { MyContext } from '../../App';
 import { useAuth } from '../../auth/AuthContext';
 
 const Header = () => {
     const context = useContext(MyContext);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [showLocationDropdown, setShowLocationDropdown] = useState(false);
+    const [showUserDropdown, setShowUserDropdown] = useState(false);
     const { currentUser, loading, logout, isAdmin } = useAuth();
     const navigate = useNavigate();
     const [isUserAdmin, setIsUserAdmin] = useState(false);
+    const [location, setLocation] = useState('Kratie');
     
     // Check if user is admin
     useEffect(() => {
@@ -28,6 +33,29 @@ const Header = () => {
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
+    };
+    
+    const toggleUserDropdown = () => {
+        setShowUserDropdown(!showUserDropdown);
+    };
+    
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            const dropdown = document.getElementById('userDropdownContainer');
+            if (dropdown && !dropdown.contains(event.target)) {
+                setShowUserDropdown(false);
+            }
+        };
+        
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+    
+    const handleLocationChange = (newLocation) => {
+        setLocation(newLocation);
     };
     
     const handleLogout = async () => {
@@ -67,275 +95,167 @@ const Header = () => {
 
     return (
         <>
+            {/* Welcome bar */}
             <div className="headerWrapper">
-                <div className="top-strip d-flex bg-sky-500 align-items-center justify-content-center">
+                <div className="top-strip d-flex align-items-center justify-content-center" style={{ backgroundColor: '#a690c9', padding: '8px 0', color: 'white' }}>
                     <div className="container">
-                        <p className="mb-0 mt-0 text-capitalize text-center">
-                            Welcome to my cake and coffee shop - Free delivery on orders over $50
+                        <p className="mb-0 mt-0 text-center">
+                            Welcome To My Cake And Coffee Shop
                         </p>
                     </div>
                 </div>
             </div>
 
-            <header className="header">
+            {/* Main Header */}
+            <div className="position-relative">
                 <div className="container">
-                    <div className="d-flex align-items-center justify-content-between">
-                        <div className="logoWrapper">
+                <div className="flex items-center justify-between gap-4 px-4 py-3">
+                  {/* Logo */}
+                  <div className="flex-shrink-0">
                             <Link to={'/'}>
-                                <img src={Logo} alt="logo" />
+                      <img src={Logo} alt="logo" className="h-[60px]" />
                             </Link>
                         </div>
 
-                        {/* Mobile Menu Button */}
-                        <div className="d-block d-md-none">
-                            <button 
-                                className="circle" 
-                                style={{ border: 'none', outline: 'none', background: 'transparent' }}
-                                onClick={toggleMenu}
-                            >
-                                {isMenuOpen ? (
-                                    <FiX size={24} color="#a690c9" />
-                                ) : (
-                                    <FiMenu size={24} color="#a690c9" />
-                                )}
-                            </button>
+                  {/* Location Dropdown Component */}
+                  <div className="hidden md:block">
+                    <LocationDropdown 
+                      selectedLocation={location}
+                      onLocationChange={handleLocationChange}
+                    />
                         </div>
 
-                        {/* Desktop Navigation */}
-                        <div className="col-sm-10 d-none d-md-flex align-items-center justify-items-center part2">
-                            <SearchBox />
-
-                            <div className="d-flex align-items-center justify-content-center">
-                                {/* User Account Menu */}
-                                <div className="position-relative" style={{ marginRight: '20px' }}>
-                                    <div className="dropdown">
-                                        <button 
-                                            className="circle dropdown-toggle d-flex align-items-center" 
-                                            style={{ border: 'none', outline: 'none', background: 'transparent' }}
-                                            id="userDropdown" 
-                                            data-bs-toggle="dropdown" 
-                                            aria-expanded="false"
-                                        >
-                                            <FaUser size={40} color="#a690c9" />
-                                            <span className="ms-2 d-none d-lg-inline">
-                                                {currentUser?.displayName || currentUser?.email?.split('@')[0] || 'My Account'}
-                                            </span>
-                                            <FaAngleDown className="ms-1 d-none d-lg-inline" />
-                                        </button>
-                                        <ul className="dropdown-menu" aria-labelledby="userDropdown">
-                                            <li><Link className="dropdown-item" to="/account">My Profile</Link></li>
-                                            <li><Link className="dropdown-item" to="/orders">My Orders</Link></li>
-                                            <li><Link className="dropdown-item" to="/wishlist">Wishlist</Link></li>
-                                            {isUserAdmin && (
-                                                <li><Link className="dropdown-item" to="/admin">Admin Dashboard</Link></li>
-                                            )}
-                                            <li><hr className="dropdown-divider" /></li>
-                                            <li>
-                                                <button 
-                                                    className="dropdown-item" 
-                                                    onClick={handleLogout}
-                                                >
-                                                    Logout
+                  {/* Search Bar - Takes most space */}
+                  <div className="flex-grow max-w-xl">
+                    <div className="flex rounded-full overflow-hidden shadow-sm">
+                      <input
+                        type="text"
+                        placeholder="Search for Products..."
+                        className="flex-grow bg-[#e7dbff] text-sm px-4 py-2 border border-[#a690c9] rounded-l-full focus:outline-none"
+                      />
+                      <button className="bg-[#a690c9] text-white px-4 rounded-r-full">
+                        <FaSearch />
                                                 </button>
-                                            </li>
-                                        </ul>
                                     </div>
                                 </div>
 
-                                {/* Cart */}
-                                <div className="ml-auto cartTable">
-                                    <span className="price">$333.29</span>
-                                    <Button
-                                        className="circle btn1 ml-2 cart-btn"
-                                        style={{
-                                            border: 'none',
-                                            marginLeft: '20px',
-                                            outline: 'none',
-                                            background: 'transparent'
-                                        }}
-                                    >
-                                        <div style={{ position: 'relative' }}>
-                                            <IoBagHandleSharp size={40} color="#a690c9" />
-                                            <span
-                                                className="count d-flex align-items-center justify-content-center"
-                                                style={{ color: "#a690c9" }}
-                                            >
-                                                1
-                                            </span>
-                                        </div>
-                                    </Button>
-                                </div>
-                            </div>
+                  {/* User Icon */}
+                  <div className="hidden md:flex items-center gap-4">
+                    <div className="dropdown relative" id="userDropdownContainer">
+                      <div 
+                        className="flex items-center gap-2 cursor-pointer" 
+                        onClick={toggleUserDropdown}
+                      >
+                        <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
+                          <FaUser size={18} className="text-[#a690c9]" />
                         </div>
+                        <div className="flex flex-col">
+                          <span className="text-sm font-medium">
+                            {currentUser?.displayName || currentUser?.email?.split('@')[0] || 'My Account'}
+                          </span>
+                          <span className="text-xs text-gray-500">My Account</span>
+                        </div>
+                        <FaAngleDown className="text-gray-500" />
+                      </div>
+                      {showUserDropdown && (
+                        <ul className="dropdown-menu dropdown-menu-end shadow border-0 py-2 absolute right-0 top-full mt-1 bg-white rounded z-10 w-48">
+                          <li><Link className="dropdown-item py-2 px-4 block hover:bg-gray-100" to="/profile">My Profile</Link></li>
+                          <li><Link className="dropdown-item py-2 px-4 block hover:bg-gray-100" to="/orders">My Orders</Link></li>
+                          <li><Link className="dropdown-item py-2 px-4 block hover:bg-gray-100" to="/wishlist">Wishlist</Link></li>
+                          {isUserAdmin && (
+                            <li><Link className="dropdown-item py-2 px-4 block hover:bg-gray-100" to="/admin">Admin Dashboard</Link></li>
+                          )}
+                          <li><hr className="dropdown-divider" /></li>
+                          <li>
+                            <button 
+                              className="dropdown-item py-2 px-4 block hover:bg-gray-100 w-full text-left" 
+                              onClick={handleLogout}
+                            >
+                              Logout
+                            </button>
+                          </li>
+                        </ul>
+                      )}
                     </div>
 
-                    {/* Mobile Menu */}
-                    {isMenuOpen && (
-                        <div className="mobile-menu d-md-none" style={{ marginTop: '20px', borderTop: '1px solid #eee', paddingTop: '20px' }}>
-                            <SearchBox />
-                            
-                            <nav className="mt-3">
-                                <ul className="list-unstyled">
-                                    <li className="mb-2">
-                                        <Link to="/" className="text-decoration-none" style={{ color: '#333', display: 'block', padding: '8px 0' }}>Home</Link>
-                                    </li>
-                                    <li className="mb-2">
-                                        <Link to="/category/cakes" className="text-decoration-none" style={{ color: '#333', display: 'block', padding: '8px 0' }}>Cakes</Link>
-                                    </li>
-                                    <li className="mb-2">
-                                        <Link to="/category/coffee" className="text-decoration-none" style={{ color: '#333', display: 'block', padding: '8px 0' }}>Coffee</Link>
-                                    </li>
-                                    <li className="mb-2">
-                                        <Link to="/category/pastries" className="text-decoration-none" style={{ color: '#333', display: 'block', padding: '8px 0' }}>Pastries</Link>
-                                    </li>
-                                    <li className="mb-2">
-                                        <Link to="/about" className="text-decoration-none" style={{ color: '#333', display: 'block', padding: '8px 0' }}>About Us</Link>
-                                    </li>
-                                    <li className="mb-2">
-                                        <Link to="/contact" className="text-decoration-none" style={{ color: '#333', display: 'block', padding: '8px 0' }}>Contact</Link>
-                                    </li>
-                                    {isUserAdmin && (
-                                        <li className="mb-2">
-                                            <Link 
-                                                to="/admin" 
-                                                className="text-decoration-none d-flex align-items-center" 
-                                                style={{ 
-                                                    color: '#a690c9', 
-                                                    display: 'block', 
-                                                    padding: '8px 0',
-                                                    fontWeight: 'bold'
-                                                }}
-                                            >
-                                                <FaLock className="me-2" /> Admin Dashboard
+                    {/* Price */}
+                    <div className="font-bold">$333.29</div>
+
+                                {/* Cart */}
+                    <Link to="/cart" className="relative">
+                      <IoBagHandleSharp size={20} className="text-[#a690c9]" />
+                      <span className="absolute -top-2 -right-2 bg-[#a690c9] text-white text-[10px] px-1.5 py-0.5 rounded-full">
+                                                1
+                                            </span>
+                    </Link>
+                                        </div>
+
+                  {/* Mobile Menu Toggle */}
+                  <div className="md:hidden">
+                    <button onClick={toggleMenu} className="flex items-center text-[#a690c9]">
+                      {isMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
+                    </button>
+                                </div>
+                            </div>
+
+                {/* Mobile Dropdown Menu */}
+                {isMenuOpen && (
+                  <div className="md:hidden px-4 py-2 border-t border-gray-200">
+                    {/* Mobile Location */}
+                    <div className="mb-3">
+                      <LocationDropdown 
+                        selectedLocation={location}
+                        onLocationChange={handleLocationChange}
+                      />
+                    </div>
+                    
+                    {/* Mobile User Options */}
+                    <div className="flex items-center justify-between mb-3">
+                      <Link to="/profile" className="flex items-center gap-2 text-gray-800">
+                        <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
+                          <FaUser size={14} className="text-[#a690c9]" />
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="text-sm font-medium">
+                            {currentUser?.displayName || currentUser?.email?.split('@')[0] || 'My Account'}
+                          </span>
+                          <span className="text-xs text-gray-500">View Profile</span>
+                        </div>
+                      </Link>
+                      <div className="font-bold">$333.29</div>
+                    </div>
+
+                    <Link to="/cart" className="flex items-center gap-2 mb-3 text-gray-800">
+                      <IoBagHandleSharp size={18} className="text-[#a690c9]" />
+                      <span>Cart</span>
                                             </Link>
-                                        </li>
-                                    )}
-                                </ul>
-                            </nav>
-                            
-                            <div className="mobile-buttons mt-3 d-flex flex-wrap" style={{ borderTop: '1px solid #eee', paddingTop: '15px' }}>
-                                <Link to="/account" className="btn mb-2 me-2" style={{ backgroundColor: '#a690c9', color: 'white' }}>
-                                    <FaUser className="me-2" /> My Account
-                                </Link>
-                                <Link to="/cart" className="btn mb-2" style={{ backgroundColor: '#a690c9', color: 'white' }}>
-                                    <IoBagHandleSharp className="me-2" /> Cart ($333.29)
-                                </Link>
+
                                 <button 
-                                    className="btn mb-2 w-100 mt-2" 
+                      className="w-full py-2 bg-red-500 text-white rounded mb-2" 
                                     onClick={handleLogout}
-                                    style={{ backgroundColor: '#dc3545', color: 'white' }}
                                 >
                                     Logout
                                 </button>
                             </div>
-                        </div>
-                    )}
-                </div>
-            </header>
+                )}
 
-            {/* Main Navigation */}
-            <nav className="main-navigation d-none d-md-block" style={{ backgroundColor: '#fff', borderBottom: '1px solid #eee', boxShadow: '0 2px 5px rgba(0,0,0,0.05)' }}>
-                <div className="container">
-                    <ul className="d-flex list-unstyled mb-0">
-                        <li>
-                            <Link to="/" className="nav-link" style={{ padding: '15px 20px', color: '#333', display: 'block', textDecoration: 'none', borderBottom: '2px solid transparent', transition: 'all 0.2s' }}>Home</Link>
-                        </li>
-                        <li>
-                            <Link to="/category/cakes" className="nav-link" style={{ padding: '15px 20px', color: '#333', display: 'block', textDecoration: 'none', borderBottom: '2px solid transparent', transition: 'all 0.2s' }}>Cakes</Link>
-                        </li>
-                        <li>
-                            <Link to="/category/coffee" className="nav-link" style={{ padding: '15px 20px', color: '#333', display: 'block', textDecoration: 'none', borderBottom: '2px solid transparent', transition: 'all 0.2s' }}>Coffee</Link>
-                        </li>
-                        <li>
-                            <Link to="/category/pastries" className="nav-link" style={{ padding: '15px 20px', color: '#333', display: 'block', textDecoration: 'none', borderBottom: '2px solid transparent', transition: 'all 0.2s' }}>Pastries</Link>
-                        </li>
-                        <li>
-                            <Link to="/category/gifts" className="nav-link" style={{ padding: '15px 20px', color: '#333', display: 'block', textDecoration: 'none', borderBottom: '2px solid transparent', transition: 'all 0.2s' }}>Gift Sets</Link>
-                        </li>
-                        <li>
-                            <Link to="/category/specials" className="nav-link" style={{ padding: '15px 20px', color: '#333', display: 'block', textDecoration: 'none', borderBottom: '2px solid transparent', transition: 'all 0.2s' }}>Specials</Link>
-                        </li>
-                        <li>
-                            <Link to="/about" className="nav-link" style={{ padding: '15px 20px', color: '#333', display: 'block', textDecoration: 'none', borderBottom: '2px solid transparent', transition: 'all 0.2s' }}>About Us</Link>
-                        </li>
-                        <li>
-                            <Link to="/contact" className="nav-link" style={{ padding: '15px 20px', color: '#333', display: 'block', textDecoration: 'none', borderBottom: '2px solid transparent', transition: 'all 0.2s' }}>Contact</Link>
-                        </li>
-                        {isUserAdmin && (
-                            <li>
-                                <Link 
-                                    to="/admin" 
-                                    className="nav-link d-flex align-items-center" 
-                                    style={{ 
-                                        padding: '15px 20px', 
-                                        color: '#a690c9', 
-                                        fontWeight: 'bold',
-                                        display: 'flex', 
-                                        textDecoration: 'none', 
-                                        borderBottom: '2px solid #a690c9'
-                                    }}
-                                >
-                                    <FaLock className="me-1" /> Admin
-                                </Link>
-                            </li>
-                        )}
-                    </ul>
+                {/* Categories Navigation - Below Header */}
+                <div className="w-full bg-[#a690c9] text-white mt-2 rounded-md">
+                  <div className="container mx-auto">
+                    <div className="flex items-center overflow-x-auto">
+                      <div className="px-4 py-2 flex items-center bg-[#9472bf] whitespace-nowrap">
+                        <FiMenu className="mr-2" />
+                        ALL CATEGORIES
                 </div>
-            </nav>
-            
-            <div className="hero-section" style={{ backgroundColor: '#f9f6ff' }}>
-                <div className="hero-content">
-                    <h1>Delicious Cakes & Coffee</h1>
-                    <p>Enjoy our handcrafted cakes and premium coffee!</p>
-                    <button className="cta-button">Order Now</button>
-                </div>
+                      <div className="flex items-center space-x-6 px-4 overflow-x-auto">
+                        <Link to="/" className="text-white whitespace-nowrap py-2">HOME</Link>
+                        <Link to="/shop" className="text-white whitespace-nowrap py-2">SHOP</Link>
+                        <Link to="/category/meats-seafood" className="text-white whitespace-nowrap py-2">MEATS & SEAFOOD</Link>
+                        <Link to="/category/bakery" className="text-white whitespace-nowrap py-2">BAKERY</Link>
+                        <Link to="/category/beverages" className="text-white whitespace-nowrap py-2">BEVERAGES</Link>
             </div>
-
-            {/* Featured Categories */}
-            <div className="featured-categories">
-                <h2>Featured Categories</h2>
-                <div className="category-grid">
-                    <div className="category-item">
-                        <h3>Birthday Cakes</h3>
-                        <p>Custom birthday cakes for any occasion!</p>
-                        <Link to="/category/birthday" className="shop-link" style={{ color: '#a690c9', fontWeight: '500', textDecoration: 'none' }}>
-                            Shop Now →
-                        </Link>
                     </div>
-                    <div className="category-item">
-                        <h3>Coffee Specials</h3>
-                        <p>Try our specialty coffee today!</p>
-                        <Link to="/category/coffee" className="shop-link" style={{ color: '#a690c9', fontWeight: '500', textDecoration: 'none' }}>
-                            Shop Now →
-                        </Link>
                     </div>
-                </div>
-            </div>
-
-            {/* Promotional Banner */}
-            <div className="promo-banner">
-                <h2>Special Offer!</h2>
-                <p>Get 10% off on your first order!</p>
-                <Link to="/signup" className="btn" style={{ backgroundColor: '#fff', color: '#a690c9', fontWeight: '500', padding: '10px 20px', borderRadius: '4px' }}>
-                    Sign Up Now
-                </Link>
-            </div>
-
-            {/* Testimonials */}
-            <div className="testimonials">
-                <h2>What Our Customers Say</h2>
-                <div className="testimonial-grid">
-                    <div className="testimonial-item">
-                        <p className="testimonial-text" style={{ fontStyle: 'italic', marginBottom: '10px' }}>
-                            "Amazing cakes and coffee! The best I've ever had."
-                        </p>
-                        <p className="testimonial-author" style={{ fontWeight: '500' }}>- Jane D.</p>
-                    </div>
-                    <div className="testimonial-item">
-                        <p className="testimonial-text" style={{ fontStyle: 'italic', marginBottom: '10px' }}>
-                            "Best experience ever! Will definitely come back again."
-                        </p>
-                        <p className="testimonial-author" style={{ fontWeight: '500' }}>- John S.</p>
                     </div>
                 </div>
             </div>

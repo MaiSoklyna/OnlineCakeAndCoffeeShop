@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Row, Col, Card, Nav, Tab } from 'react-bootstrap';
-import { FaUsers, FaBox, FaClipboardList, FaChartLine } from 'react-icons/fa';
+import { FaUsers, FaBox, FaClipboardList, FaChartLine, FaPlus } from 'react-icons/fa';
 import { useAuth } from '../auth/AuthContext';
 import UserManagement from './UserManagement';
 
@@ -9,164 +8,210 @@ const AdminDashboard = () => {
   const [activeKey, setActiveKey] = useState('overview');
 
   return (
-    <Container className="py-4">
-      <Row className="mb-4">
-        <Col>
-          <h2>Admin Dashboard</h2>
-          <p className="text-muted">Welcome {currentUser?.displayName || currentUser?.email?.split('@')[0]}!</p>
-        </Col>
-      </Row>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
+        <p className="text-gray-500 mt-1">
+          Welcome {currentUser?.displayName || currentUser?.email?.split('@')[0]}!
+        </p>
+      </div>
       
-      <Row>
-        <Col md={3} className="mb-4">
-          <Card className="shadow-sm">
-            <Card.Body>
-              <Nav variant="pills" className="flex-column" activeKey={activeKey} onSelect={(k) => setActiveKey(k)}>
-                <Nav.Item>
-                  <Nav.Link eventKey="overview" className="d-flex align-items-center">
-                    <FaChartLine className="me-2" /> Overview
-                  </Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
-                  <Nav.Link eventKey="products" className="d-flex align-items-center">
-                    <FaBox className="me-2" /> Products
-                  </Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
-                  <Nav.Link eventKey="orders" className="d-flex align-items-center">
-                    <FaClipboardList className="me-2" /> Orders
-                  </Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
-                  <Nav.Link eventKey="users" className="d-flex align-items-center">
-                    <FaUsers className="me-2" /> Users
-                  </Nav.Link>
-                </Nav.Item>
-              </Nav>
-            </Card.Body>
-          </Card>
-        </Col>
-        
-        <Col md={9}>
-          <Tab.Content>
-            <Tab.Pane eventKey="overview" active={activeKey === "overview"}>
-              <Row>
-                <Col md={4} className="mb-4">
-                  <Card className="shadow-sm" style={{ borderLeft: "4px solid #a690c9" }}>
-                    <Card.Body>
-                      <div className="d-flex justify-content-between align-items-center">
-                        <div>
-                          <h6 className="text-muted mb-1">Total Orders</h6>
-                          <h3 className="mb-0">156</h3>
-                        </div>
-                        <FaClipboardList size={30} color="#a690c9" />
-                      </div>
-                    </Card.Body>
-                  </Card>
-                </Col>
-                
-                <Col md={4} className="mb-4">
-                  <Card className="shadow-sm" style={{ borderLeft: "4px solid #a690c9" }}>
-                    <Card.Body>
-                      <div className="d-flex justify-content-between align-items-center">
-                        <div>
-                          <h6 className="text-muted mb-1">Total Products</h6>
-                          <h3 className="mb-0">48</h3>
-                        </div>
-                        <FaBox size={30} color="#a690c9" />
-                      </div>
-                    </Card.Body>
-                  </Card>
-                </Col>
-                
-                <Col md={4} className="mb-4">
-                  <Card className="shadow-sm" style={{ borderLeft: "4px solid #a690c9" }}>
-                    <Card.Body>
-                      <div className="d-flex justify-content-between align-items-center">
-                        <div>
-                          <h6 className="text-muted mb-1">Total Users</h6>
-                          <h3 className="mb-0">312</h3>
-                        </div>
-                        <FaUsers size={30} color="#a690c9" />
-                      </div>
-                    </Card.Body>
-                  </Card>
-                </Col>
-              </Row>
+      <div className="flex flex-col lg:flex-row gap-6">
+        {/* Sidebar Navigation */}
+        <div className="w-full lg:w-1/4">
+          <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+            <nav className="p-2">
+              <button
+                onClick={() => setActiveKey('overview')}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${
+                  activeKey === 'overview'
+                    ? 'bg-purple-50 text-purple-700 font-medium'
+                    : 'text-gray-700 hover:bg-gray-50'
+                }`}
+              >
+                <FaChartLine className={activeKey === 'overview' ? 'text-purple-600' : 'text-gray-500'} />
+                <span>Overview</span>
+              </button>
               
-              <Card className="shadow-sm mb-4">
-                <Card.Header className="bg-transparent">
-                  <h5 className="mb-0">Recent Orders</h5>
-                </Card.Header>
-                <Card.Body>
-                  <table className="table">
-                    <thead>
-                      <tr>
-                        <th>Order ID</th>
-                        <th>Customer</th>
-                        <th>Items</th>
-                        <th>Total</th>
-                        <th>Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>#ORD-1234</td>
-                        <td>John Doe</td>
-                        <td>3</td>
-                        <td>$45.99</td>
-                        <td><span className="badge bg-success">Delivered</span></td>
-                      </tr>
-                      <tr>
-                        <td>#ORD-1235</td>
-                        <td>Jane Smith</td>
-                        <td>1</td>
-                        <td>$24.50</td>
-                        <td><span className="badge bg-warning">Processing</span></td>
-                      </tr>
-                      <tr>
-                        <td>#ORD-1236</td>
-                        <td>Robert Johnson</td>
-                        <td>5</td>
-                        <td>$112.75</td>
-                        <td><span className="badge bg-info">Shipped</span></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </Card.Body>
-              </Card>
-            </Tab.Pane>
-            
-            <Tab.Pane eventKey="products" active={activeKey === "products"}>
-              <Card className="shadow-sm">
-                <Card.Header className="bg-transparent d-flex justify-content-between align-items-center">
-                  <h5 className="mb-0">Products Management</h5>
-                  <button className="btn btn-sm" style={{ backgroundColor: "#a690c9", color: "white" }}>Add New Product</button>
-                </Card.Header>
-                <Card.Body>
-                  <p className="text-muted">Manage your cake and coffee products here.</p>
-                </Card.Body>
-              </Card>
-            </Tab.Pane>
-            
-            <Tab.Pane eventKey="orders" active={activeKey === "orders"}>
-              <Card className="shadow-sm">
-                <Card.Header className="bg-transparent">
-                  <h5 className="mb-0">Orders Management</h5>
-                </Card.Header>
-                <Card.Body>
-                  <p className="text-muted">Manage customer orders here.</p>
-                </Card.Body>
-              </Card>
-            </Tab.Pane>
-            
-            <Tab.Pane eventKey="users" active={activeKey === "users"}>
-              <UserManagement />
-            </Tab.Pane>
-          </Tab.Content>
-        </Col>
-      </Row>
-    </Container>
+              <button
+                onClick={() => setActiveKey('products')}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${
+                  activeKey === 'products'
+                    ? 'bg-purple-50 text-purple-700 font-medium'
+                    : 'text-gray-700 hover:bg-gray-50'
+                }`}
+              >
+                <FaBox className={activeKey === 'products' ? 'text-purple-600' : 'text-gray-500'} />
+                <span>Products</span>
+              </button>
+              
+              <button
+                onClick={() => setActiveKey('orders')}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${
+                  activeKey === 'orders'
+                    ? 'bg-purple-50 text-purple-700 font-medium'
+                    : 'text-gray-700 hover:bg-gray-50'
+                }`}
+              >
+                <FaClipboardList className={activeKey === 'orders' ? 'text-purple-600' : 'text-gray-500'} />
+                <span>Orders</span>
+              </button>
+              
+              <button
+                onClick={() => setActiveKey('users')}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${
+                  activeKey === 'users'
+                    ? 'bg-purple-50 text-purple-700 font-medium'
+                    : 'text-gray-700 hover:bg-gray-50'
+                }`}
+              >
+                <FaUsers className={activeKey === 'users' ? 'text-purple-600' : 'text-gray-500'} />
+                <span>Users</span>
+              </button>
+            </nav>
+          </div>
+        </div>
+        
+        {/* Main Content */}
+        <div className="flex-1">
+          {/* Overview Tab */}
+          {activeKey === 'overview' && (
+            <>
+              {/* Stats Cards */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                {/* Orders Card */}
+                <div className="bg-white rounded-xl shadow-sm overflow-hidden border-l-4 border-[#a690c9]">
+                  <div className="p-5 flex justify-between items-center">
+                    <div>
+                      <p className="text-sm text-gray-500 mb-1">Total Orders</p>
+                      <h3 className="text-2xl font-bold text-gray-800">156</h3>
+                    </div>
+                    <div className="bg-purple-50 p-3 rounded-lg">
+                      <FaClipboardList size={24} className="text-[#a690c9]" />
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Products Card */}
+                <div className="bg-white rounded-xl shadow-sm overflow-hidden border-l-4 border-[#a690c9]">
+                  <div className="p-5 flex justify-between items-center">
+                    <div>
+                      <p className="text-sm text-gray-500 mb-1">Total Products</p>
+                      <h3 className="text-2xl font-bold text-gray-800">48</h3>
+                    </div>
+                    <div className="bg-purple-50 p-3 rounded-lg">
+                      <FaBox size={24} className="text-[#a690c9]" />
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Users Card */}
+                <div className="bg-white rounded-xl shadow-sm overflow-hidden border-l-4 border-[#a690c9]">
+                  <div className="p-5 flex justify-between items-center">
+                    <div>
+                      <p className="text-sm text-gray-500 mb-1">Total Users</p>
+                      <h3 className="text-2xl font-bold text-gray-800">312</h3>
+                    </div>
+                    <div className="bg-purple-50 p-3 rounded-lg">
+                      <FaUsers size={24} className="text-[#a690c9]" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Recent Orders Table */}
+              <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+                <div className="px-6 py-4 border-b border-gray-100">
+                  <h2 className="font-semibold text-lg text-gray-800">Recent Orders</h2>
+                </div>
+                <div className="p-0">
+                  <div className="overflow-x-auto">
+                    <table className="w-full">
+                      <thead className="bg-gray-50 text-gray-600 text-sm">
+                        <tr>
+                          <th className="py-3 px-4 text-left font-medium">Order ID</th>
+                          <th className="py-3 px-4 text-left font-medium">Customer</th>
+                          <th className="py-3 px-4 text-left font-medium">Items</th>
+                          <th className="py-3 px-4 text-left font-medium">Total</th>
+                          <th className="py-3 px-4 text-left font-medium">Status</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-gray-100">
+                        <tr className="hover:bg-gray-50">
+                          <td className="py-3 px-4">#ORD-1234</td>
+                          <td className="py-3 px-4">John Doe</td>
+                          <td className="py-3 px-4">3</td>
+                          <td className="py-3 px-4">$45.99</td>
+                          <td className="py-3 px-4">
+                            <span className="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">
+                              Delivered
+                            </span>
+                          </td>
+                        </tr>
+                        <tr className="hover:bg-gray-50">
+                          <td className="py-3 px-4">#ORD-1235</td>
+                          <td className="py-3 px-4">Jane Smith</td>
+                          <td className="py-3 px-4">1</td>
+                          <td className="py-3 px-4">$24.50</td>
+                          <td className="py-3 px-4">
+                            <span className="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">
+                              Processing
+                            </span>
+                          </td>
+                        </tr>
+                        <tr className="hover:bg-gray-50">
+                          <td className="py-3 px-4">#ORD-1236</td>
+                          <td className="py-3 px-4">Robert Johnson</td>
+                          <td className="py-3 px-4">5</td>
+                          <td className="py-3 px-4">$112.75</td>
+                          <td className="py-3 px-4">
+                            <span className="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800">
+                              Shipped
+                            </span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+          
+          {/* Products Tab */}
+          {activeKey === 'products' && (
+            <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+              <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+                <h2 className="font-semibold text-lg text-gray-800">Products Management</h2>
+                <button className="px-3 py-2 bg-[#a690c9] hover:bg-[#8065b0] text-white rounded-lg transition-colors flex items-center gap-2 text-sm">
+                  <FaPlus size={12} />
+                  Add New Product
+                </button>
+              </div>
+              <div className="p-6">
+                <p className="text-gray-500">Manage your cake and coffee products here.</p>
+              </div>
+            </div>
+          )}
+          
+          {/* Orders Tab */}
+          {activeKey === 'orders' && (
+            <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+              <div className="px-6 py-4 border-b border-gray-100">
+                <h2 className="font-semibold text-lg text-gray-800">Orders Management</h2>
+              </div>
+              <div className="p-6">
+                <p className="text-gray-500">Manage customer orders here.</p>
+              </div>
+            </div>
+          )}
+          
+          {/* Users Tab */}
+          {activeKey === 'users' && <UserManagement />}
+        </div>
+      </div>
+    </div>
   );
 };
 

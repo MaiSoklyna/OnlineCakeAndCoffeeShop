@@ -10,6 +10,9 @@ import Footer from './components/Footer/Footer.jsx';
 import HomePage from './components/page/HomePage.jsx';
 import AboutPage from './components/page/AboutPage.jsx';
 import Contact from './components/page/Contact.jsx';
+import MenuPage from './components/page/MenuPage.jsx';
+import GalleryPage from './components/page/GalleryPage.jsx';
+import ProfilePage from './components/page/ProfilePage.jsx';
 
 // Categories
 import Categories from './components/Categories/Categories.jsx';
@@ -81,6 +84,73 @@ function App() {
                   <>
                     <Header />
                     <Contact />
+                    <Footer />
+                  </>
+                } />
+                <Route path="/menu" element={
+                  <>
+                    <Header />
+                    <MenuPage />
+                    <Footer />
+                  </>
+                } />
+                <Route path="/gallery" element={
+                  <>
+                    <Header />
+                    <GalleryPage />
+                    <Footer />
+                  </>
+                } />
+                
+                {/* User Profile Page */}
+                <Route path="/profile" element={
+                  <>
+                    <Header />
+                    <ProfilePage />
+                    <Footer />
+                  </>
+                } />
+
+                {/* Cake and Coffee Categories */}
+                <Route path="/category/cakes" element={
+                  <>
+                    <Header />
+                    <MenuPage />
+                    <Footer />
+                  </>
+                } />
+                <Route path="/category/coffee" element={
+                  <>
+                    <Header />
+                    <MenuPage />
+                    <Footer />
+                  </>
+                } />
+                <Route path="/category/pastries" element={
+                  <>
+                    <Header />
+                    <MenuPage />
+                    <Footer />
+                  </>
+                } />
+                <Route path="/category/gifts" element={
+                  <>
+                    <Header />
+                    <MenuPage />
+                    <Footer />
+                  </>
+                } />
+                <Route path="/category/specials" element={
+                  <>
+                    <Header />
+                    <MenuPage />
+                    <Footer />
+                  </>
+                } />
+                <Route path="/category/birthday" element={
+                  <>
+                    <Header />
+                    <MenuPage />
                     <Footer />
                   </>
                 } />
