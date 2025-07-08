@@ -21,6 +21,7 @@ const Header = () => {
     const navigate = useNavigate();
     const [isUserAdmin, setIsUserAdmin] = useState(false);
     const [location, setLocation] = useState('Kratie');
+    const [searchQuery, setSearchQuery] = useState('');
     
     // Check if user is admin
     useEffect(() => {
@@ -64,6 +65,15 @@ const Header = () => {
             navigate('/login');
         } catch (error) {
             console.error('Failed to log out:', error);
+        }
+    };
+
+    // Function to handle search
+    const handleSearch = (e) => {
+        e.preventDefault();
+        if (searchQuery.trim()) {
+            navigate(`/menu?search=${encodeURIComponent(searchQuery.trim())}`);
+            setSearchQuery('');
         }
     };
 
@@ -111,9 +121,9 @@ const Header = () => {
                 <div className="container">
                     <div className="flex items-center justify-between gap-4 px-4 py-3">
                         {/* Logo */}
-                        <div className="flex-shrink-0">
+                        <div className="flex-shrink-0 m-1 ml-20">
                             <Link to={'/'}>
-                                <img src={Logo} alt="logo" className="h-[60px]" />
+                                <img src={Logo} alt="logo"  className="h-[60px]" />
                             </Link>
                         </div>
 
@@ -126,17 +136,19 @@ const Header = () => {
                         </div>
 
                         {/* Search Bar - Takes most space */}
-                        <div className="flex-grow max-w-xl">
-                            <div className="flex rounded-full overflow-hidden shadow-sm">
+                        <div className="flex-grow max-w-xl margin-left-20">
+                            <form onSubmit={handleSearch} className="flex rounded-full overflow-hidden shadow-sm">
                                 <input
                                     type="text"
                                     placeholder="Search for Products..."
                                     className="flex-grow bg-[#e7dbff] text-sm px-4 py-2 border border-[#a690c9] rounded-l-full focus:outline-none"
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
                                 />
-                                <button className="bg-[#a690c9] text-white px-4 rounded-r-full">
+                                <button type="submit" className="bg-[#a690c9] text-white px-4 rounded-r-full">
                                     <FaSearch />
                                 </button>
-                            </div>
+                            </form>
                         </div>
 
                         {/* User Icon */}
@@ -239,21 +251,22 @@ const Header = () => {
                         </div>
                     )}
 
-                    {/* Categories Navigation - Below Header */}
-                    <div className="w-full bg-[#a690c9] text-white mt-2 rounded-md">
-                        <div className="container mx-auto">
+                    {/* Categories Navigation - Improved Style */}
+                    <div className="w-full bg-gradient-to-r from-[#a690c9] to-[#8065b0] text-white mt-3 rounded-lg shadow-md">
+                        <div className="container mx-auto py-1">
                             <div className="flex justify-center">
-                                <div className="flex flex-nowrap items-center">
-                                    <div className="px-4 py-2 flex items-center bg-[#9472bf] whitespace-nowrap">
-                                        <FiMenu className="mr-2" />
-                                        ALL CATEGORIES
+                                <div className="flex flex-wrap items-center">
+                                    <div className="px-5 py-2.5 flex items-center bg-[#8065b0] rounded-l-lg hover:bg-[#7055a0] transition-colors cursor-pointer">
+                                        <FiMenu className="text-white mr-2.5" />
+                                        <span className="font-medium tracking-wide">CAKES</span>
                                     </div>
-                                    <div className="flex flex-nowrap items-center space-x-6 px-4">
-                                        <Link to="/" className="text-white whitespace-nowrap py-2">HOME</Link>
-                                        <Link to="/shop" className="text-white whitespace-nowrap py-2">SHOP</Link>
-                                        <Link to="/category/meats-seafood" className="text-white whitespace-nowrap py-2">MEATS & SEAFOOD</Link>
-                                        <Link to="/category/bakery" className="text-white whitespace-nowrap py-2">BAKERY</Link>
-                                        <Link to="/category/beverages" className="text-white whitespace-nowrap py-2">BEVERAGES</Link>
+                                    <div className="flex flex-wrap items-center">
+                                        <Link to="/" className="px-4 py-2.5 hover:bg-[#8065b0] transition-colors whitespace-nowrap">HOME</Link>
+                                        <Link to="/menu" className="px-4 py-2.5 hover:bg-[#8065b0] transition-colors whitespace-nowrap">MENU</Link>
+                                        <Link to="/category/chocolate" className="px-4 py-2.5 hover:bg-[#8065b0] transition-colors whitespace-nowrap">CHOCOLATE</Link>
+                                        <Link to="/category/matcha" className="px-4 py-2.5 hover:bg-[#8065b0] transition-colors whitespace-nowrap">MATCHA</Link>
+                                        <Link to="/gallery" className="px-4 py-2.5 hover:bg-[#8065b0] transition-colors whitespace-nowrap">GALLERY</Link>
+                                        <Link to="/contact" className="px-4 py-2.5 hover:bg-[#8065b0] transition-colors whitespace-nowrap">CONTACT</Link>
                                     </div>
                                 </div>
                             </div>

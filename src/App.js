@@ -13,6 +13,8 @@ import Contact from './components/page/Contact.jsx';
 import MenuPage from './components/page/MenuPage.jsx';
 import GalleryPage from './components/page/GalleryPage.jsx';
 import ProfilePage from './components/page/ProfilePage.jsx';
+import ProductDetailPage from './components/page/ProductDetailPage.jsx';
+import CartPage from './components/page/CartPage.jsx';
 
 // Categories
 import Categories from './components/Categories/Categories.jsx';
@@ -98,6 +100,24 @@ function App() {
                   <>
                     <Header />
                     <GalleryPage />
+                    <Footer />
+                  </>
+                } />
+                
+                {/* Product Detail Page */}
+                <Route path="/product/:id" element={
+                  <>
+                    <Header />
+                    <ProductDetailPage />
+                    <Footer />
+                  </>
+                } />
+                
+                {/* Shopping Cart */}
+                <Route path="/cart" element={
+                  <>
+                    <Header />
+                    <CartPage />
                     <Footer />
                   </>
                 } />

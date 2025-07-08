@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { FaUsers, FaBox, FaClipboardList, FaChartLine, FaPlus } from 'react-icons/fa';
 import { useAuth } from '../auth/AuthContext';
 import UserManagement from './UserManagement';
+import ProductManagement from './ProductManagement';
+import OrderManagement from './OrderManagement';
 
 const AdminDashboard = () => {
   const { currentUser } = useAuth();
@@ -180,32 +182,10 @@ const AdminDashboard = () => {
           )}
           
           {/* Products Tab */}
-          {activeKey === 'products' && (
-            <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-              <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
-                <h2 className="font-semibold text-lg text-gray-800">Products Management</h2>
-                <button className="px-3 py-2 bg-[#a690c9] hover:bg-[#8065b0] text-white rounded-lg transition-colors flex items-center gap-2 text-sm">
-                  <FaPlus size={12} />
-                  Add New Product
-                </button>
-              </div>
-              <div className="p-6">
-                <p className="text-gray-500">Manage your cake and coffee products here.</p>
-              </div>
-            </div>
-          )}
+          {activeKey === 'products' && <ProductManagement />}
           
           {/* Orders Tab */}
-          {activeKey === 'orders' && (
-            <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-              <div className="px-6 py-4 border-b border-gray-100">
-                <h2 className="font-semibold text-lg text-gray-800">Orders Management</h2>
-              </div>
-              <div className="p-6">
-                <p className="text-gray-500">Manage customer orders here.</p>
-              </div>
-            </div>
-          )}
+          {activeKey === 'orders' && <OrderManagement />}
           
           {/* Users Tab */}
           {activeKey === 'users' && <UserManagement />}
